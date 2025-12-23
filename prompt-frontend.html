@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>热点运营常用prompt</title>
+    <link rel="stylesheet" href="prompt-manager-styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* 前台专用样式 */
+        .admin-only {
+            display: none !important;
+        }
+        
+        .frontend-header {
+            background: white;
+            color: #1f2937;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        .frontend-header .logo {
+            color: #1f2937;
+        }
+        
+        .frontend-header .logo-icon {
+            filter: brightness(1.2);
+        }
+        
+        .card-actions .card-action:not([data-action="copy"]) {
+            display: none;
+        }
+        
+        .detail-actions .btn-secondary {
+            display: none;
+        }
+        
+        .readonly-notice {
+            background: #f0f9ff;
+            border: 1px solid #bae6fd;
+            border-radius: 8px;
+            padding: 12px 16px;
+            margin-bottom: 20px;
+            color: #0369a1;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .readonly-notice svg {
+            flex-shrink: 0;
+        }
+        
+        .contact-footer {
+            position: fixed;
+            bottom: 10px;
+            left: 10px;
+            font-size: 12px;
+            color: #6b7280;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 4px 8px;
+            border-radius: 4px;
+            backdrop-filter: blur(4px);
+            z-index: 1000;
+        }
+    </style>
+</head>
+<body>
+    <!-- 顶部导航栏 -->
+    <header class="header frontend-header">
+        <div class="header-container">
+            <div class="header-left">
+                <h1 class="logo">
+                    <span class="logo-icon">🔥</span>
+                    热点运营常用prompt
+                </h1>
+            </div>
+            <div class="header-center">
+                <!-- 前台不需要搜索功能 -->
+            </div>
+            <div class="header-right">
+                <div class="readonly-notice">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <line x1="12" y1="8" x2="12" y2="12"></line>
+                        <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                    </svg>
+                    <span>只读模式 - 仅可查看和复制</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- 主要内容区域 -->
+    <main class="main-container">
+        <!-- 左侧导航栏 -->
+        <aside class="sidebar">
+            <div class="sidebar-section">
+                <div class="sidebar-header">
+                    <h3 class="sidebar-title">分类</h3>
+                    <!-- 前台不显示添加分类按钮 -->
+                </div>
+                <nav class="category-nav">
+                    <button class="category-btn active" data-category="all">
+                        <span class="category-icon">📝</span>
+                        <span class="category-name">全部</span>
+                        <span class="category-count">(<span id="countAll">0</span>)</span>
+                    </button>
+                    <!-- 动态分类将通过 JavaScript 生成 -->
+                </nav>
+            </div>
+        </aside>
+
+        <!-- 主内容区域 -->
+        <section class="content-area">
+            <!-- 工具栏 -->
+            <div class="toolbar">
+                <div class="toolbar-left">
+                    <span class="result-count" id="resultCount">共 0 个 Prompt</span>
+                </div>
+                <div class="toolbar-right">
+                    <div class="sort-container">
+                        <label for="sortSelect">排序：</label>
+                        <select id="sortSelect" class="sort-select">
+                            <option value="created">创建时间</option>
+                            <option value="updated">更新时间</option>
+                            <option value="name">名称</option>
+                        </select>
+                    </div>
+                    <div class="view-toggle">
+                        <button class="view-btn active" data-view="grid" title="网格视图">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="3" y="3" width="7" height="7"></rect>
+                                <rect x="14" y="3" width="7" height="7"></rect>
+                                <rect x="14" y="14" width="7" height="7"></rect>
+                                <rect x="3" y="14" width="7" height="7"></rect>
+                            </svg>
+                        </button>
+                        <button class="view-btn" data-view="list" title="列表视图">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <line x1="8" y1="6" x2="21" y2="6"></line>
+                                <line x1="8" y1="12" x2="21" y2="12"></line>
+                                <line x1="8" y1="18" x2="21" y2="18"></line>
+                                <line x1="3" y1="6" x2="3.01" y2="6"></line>
+                                <line x1="3" y1="12" x2="3.01" y2="12"></line>
+                                <line x1="3" y1="18" x2="3.01" y2="18"></line>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Prompt 展示区域 -->
+            <div class="prompts-container" id="promptsContainer">
+                <!-- Prompt 卡片将通过 JavaScript 动态生成 -->
+            </div>
+
+            <!-- 空状态 -->
+            <div class="empty-state" id="emptyState" style="display: none;">
+                <div class="empty-icon">📝</div>
+                <h3>暂无 Prompt</h3>
+                <p>管理员还没有添加任何 Prompt</p>
+            </div>
+        </section>
+
+        <!-- 右侧详情面板 -->
+        <aside class="detail-panel" id="detailPanel">
+            <div class="detail-header">
+                <h3 class="detail-title" id="detailTitle">选择一个 Prompt</h3>
+                <button class="detail-close" id="detailClose">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+            <div class="detail-content" id="detailContent">
+                <div class="detail-placeholder">
+                    <div class="placeholder-icon">👈</div>
+                    <p>点击左侧的 Prompt 卡片查看详细信息</p>
+                </div>
+            </div>
+        </aside>
+    </main>
+
+    <!-- 复制成功提示 -->
+    <div class="toast" id="copyToast">
+        <div class="toast-content">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="20,6 9,17 4,12"></polyline>
+            </svg>
+            <span>已复制到剪贴板</span>
+        </div>
+    </div>
+
+    <!-- 联系信息 -->
+    <footer class="contact-footer">
+        <p>如有需要增加、调整或更新，请联系elbezhao</p>
+    </footer>
+
+    <script src="prompt-frontend-script.js"></script>
+</body>
+</html>
